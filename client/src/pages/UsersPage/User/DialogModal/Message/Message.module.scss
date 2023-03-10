@@ -1,0 +1,43 @@
+.message {
+    display: flex;
+
+    align-items: center;
+    gap: 10px;
+    background-color: #a67481bd;
+    border-radius: .5rem;
+    width: fit-content;
+    padding-right: 1rem;
+
+    // .text {
+    //     align-items: flex-start;
+    // }
+
+    img {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+    }
+
+    h6 {
+        font-size: 12px;
+    }
+
+    span {
+        font-size: 15px;
+        //alowing us to see whitespaces between words
+        white-space: pre;
+    }
+}
+
+.isMe {
+    flex-direction: row-reverse;
+    align-self: flex-end;
+    padding-right: 0;
+    padding-left: 1rem;
+
+    .text {
+        display: flex;
+        align-items: flex-end;
+        flex-direction: column;
+    }
+}

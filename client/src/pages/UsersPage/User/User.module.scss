@@ -1,0 +1,152 @@
+// @import url(https://fonts.googleapis.com/css?family=Open+Sans:600,300);
+
+$brown: #786450;
+
+.container {
+    background: #fff;
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: 10px 10px 15px 0 rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    max-width: fit-content;
+    min-width: 183px;
+
+
+    .profile {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        .image {
+            position: relative;
+            width: 70px;
+            height: 70px;
+            margin: 0 auto;
+
+            .circle1 {
+                position: absolute;
+                box-sizing: border-box;
+                width: 76px;
+                height: 76px;
+                top: -3px;
+                left: -3px;
+                border-width: 1px;
+                border-style: solid;
+                border-color: $brown $brown $brown transparent;
+                border-radius: 50%;
+                transition: all 1.5s ease-in-out;
+            }
+
+            .circle2 {
+                @extend .circle1;
+                width: 82px;
+                height: 82px;
+                top: -6px;
+                left: -6px;
+                border-color: $brown transparent $brown $brown;
+            }
+
+            img {
+                display: block;
+                border-radius: 50%;
+                background: #F5E8DF;
+            }
+
+            &:hover {
+                cursor: pointer;
+
+                .circle1 {
+                    transform: rotate(360deg);
+                }
+
+                .circle2 {
+                    transform: rotate(-360deg);
+                }
+
+            }
+
+        }
+
+        .infobox {
+            min-height: 1.4rem;
+            .name {
+                font-size: .9rem;
+                font-weight: 600;
+
+            }
+
+            .job {
+                font-size: .4rem;
+                line-height: 15px;
+            }
+        }
+
+        .actions {
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: .5rem;
+
+            .btn {
+                width: 80%;
+                padding: .5rem;
+
+                background: none;
+                border: 1px solid $brown;
+                border-radius: 15px;
+                font-size: 12px;
+                font-weight: 600;
+                box-sizing: border-box;
+                transition: all .3s ease-in-out;
+                color: $brown;
+
+                &:hover {
+                    background: $brown;
+                    color: #fff;
+                }
+            }
+        }
+
+    }
+}
+
+// .stats {
+//     float: left;
+
+//     .box {
+//         box-sizing: border-box;
+//         width: 120px;
+//         height: 99px;
+//         background: #F5E8DF;
+//         text-align: center;
+//         padding-top: 28px;
+//         transition: all .4s ease-in-out;
+
+//         &:hover {
+//             background: #E1CFC2;
+//             cursor: pointer;
+//         }
+
+//         &:nth-child(2) {
+//             margin: 1px 0;
+//         }
+
+//     }
+
+//     span {
+//         display: block;
+//     }
+
+//     .value {
+//         font-size: 18px;
+//         font-weight: 600;
+//     }
+
+//     .parameter {
+//         font-size: 11px;
+//     }
+
+// }

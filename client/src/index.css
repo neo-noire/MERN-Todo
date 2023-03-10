@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  background-image: linear-gradient(to bottom,
+      #a0d2eb, #87bfe7, #77aae2, #7194da,
+      #767ccd, #8671c0, #9267b1, #9a5da1,
+      #a36496, #a66c8e, #a6768a, #a28089);
+  background-repeat: no-repeat;
+
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
