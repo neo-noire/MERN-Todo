@@ -23,14 +23,21 @@ export const getDialog = async (req, res) => {
         })
         //adding a message between users
         if (exist.length === 0) {
+            const dialog = new Dialog({
+                from: msgFrom,
+                to: msgTo,
+            })
+
+            await dialog.save()
             return res.json({
+                dialog,
                 message: `You didn't have any messages with this user`
             })
         }
 
 
         return res.json({
-            exist,
+            dialog: exist[0],
             message: `this is your dialog`
         })
     } catch (error) {
