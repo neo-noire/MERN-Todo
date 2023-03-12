@@ -1,19 +1,25 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { addTasks, getTodos, deleteTodo } from '../redux/fetures/todos/todosSlice'
 import { Task } from './Task/Task'
-
 import { VscTrash } from 'react-icons/vsc'
 import { toast } from 'react-toastify'
 
 export const TodoCard = ({ state }) => {
     const list = [...state.tasks]
-
-
     const [taskInput, setTaskInput] = useState('')
-
-
     const dispatch = useDispatch()
+    const [isCompleted, setIsCompleted] = useState(false)
+
+
+    useEffect(() => {
+        if (list.filter(el => !el.completed).length === 0) {
+            setIsCompleted(true)
+        } else {
+            setIsCompleted(false)
+        }
+    }, [list])
+
     const taskHandler = () => {
         if (taskInput === '') return
         const data = new FormData()
@@ -34,9 +40,10 @@ export const TodoCard = ({ state }) => {
     }
 
     return (
-        <div className=" bg-slate-300 p-2 rounded-lg">
+        <div className={`${isCompleted ? ` border-green-300` : `border-slate-300`} border-4 bg-slate-300 p-2 rounded-lg`}>
             <div className=" max-w-[15rem]">
-                <h1 className='relative flex flex-col items-center justify-center'>{state.title}
+                <h1 className='relative flex  flex-col items-center justify-center '>
+                    <span className='max-w-[10rem] flex text-center whitespace-normal'> {state.title}</span>
                     <button onClick={todoDeleteHandler} className='absolute top-0 right-0'><VscTrash /></button>
                     <div className=' relative'>
                         <input type='text' value={taskInput} onChange={e => setTaskInput(e.target.value)}
@@ -56,7 +63,7 @@ export const TodoCard = ({ state }) => {
                     <div className='flex flex-col gap-2 mt-4'>
                         {
                             list
-                                .sort((a, b) => a.completed - b.completed || new Date(b.updatedAt) - new Date(a.updatedAt) )
+                                .sort((a, b) => a.completed - b.completed || new Date(b.updatedAt) - new Date(a.updatedAt))
                                 .map((el) => <Task key={el._id} state={el} />)
                         }
                     </div>

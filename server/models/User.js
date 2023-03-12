@@ -15,6 +15,7 @@ const UserSchema = new Schema({
         type: String,
         require: true,
     },
+    isOnline: { type: Boolean, default: false },
     todos: [{
         type: new mongoose.Schema({
             userId: { type: String },

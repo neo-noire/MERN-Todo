@@ -11,16 +11,18 @@ import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { getMe } from "./redux/fetures/auth/authSlice";
 import { io } from 'socket.io-client';
+import { socketUrl } from "./utils/constant";
+import { Profile } from "./pages/Profile/Profile";
 
 
 function App() {
   const [socket, setSocket] = useState(null)
-  
+
   const dispatch = useDispatch()
-  
+
   useEffect(() => {
     dispatch(getMe())
-    setSocket(io('http://localhost:3001'))
+    setSocket(io(socketUrl))
   }, [dispatch])
 
   return (
@@ -29,6 +31,7 @@ function App() {
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="users" element={<UsersPage />} />
+        <Route path="profile" element={<Profile />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<AuthPage />} />
       </Routes>

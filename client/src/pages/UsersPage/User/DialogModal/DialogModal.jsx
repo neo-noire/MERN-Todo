@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import s from './DialogModal.module.scss'
-import axios from '../../../../utils/axios'
 import { useFetch } from '../../../../hooks/useFetch'
 import { RiSendPlane2Line } from 'react-icons/ri'
 import { Message } from './Message/Message'
 import { io } from 'socket.io-client';
 import { useSelector } from 'react-redux'
+import { socketUrl } from '../../../../utils/constant'
 
 export const DialogModal = ({ setDialogClose, users }) => {
     const [socket, setSocket] = useState(null)
@@ -15,24 +15,31 @@ export const DialogModal = ({ setDialogClose, users }) => {
     const [isTyping, setIsTyping] = useState(false)
     const [typingTimeout, setTypingTimeout] = useState(null)
     const token = useSelector(state => state?.auth?.token)
-    
+
 
     const { data, loading } = useFetch('/dialog/get', { recieverId: users.userId })
     useEffect(() => {
-        data?.dialog && setDialog(data?.dialog?.messages.reverse())
-        data?.dialog && setDialogId(data?.dialog?._id)
+        if (data?.dialog) {
+            setDialog(data?.dialog?.messages.reverse())
+            // console.log(data?.dialog?.messages.reverse().reduce((acc, curr) =>
+            //  ,[]))
+            setDialogId(data?.dialog?._id)
+        }
     }, [data])
 
     useEffect(() => {
-        setSocket(io('http://localhost:3001'))
+        dialogId && socket.emit('join', { chat: dialogId })
+    }, [dialogId])
+
+    useEffect(() => {
+        setSocket(io(socketUrl))
     }, [])
 
     useEffect(() => {
-
         if (!socket) return
         socket.on('from-server-message', (data) => {
-             setDialog(data?.messages.reverse())
-            console.log('message recieved', data);
+            console.log(data)
+            setDialog(data?.messages.reverse())
         })
         socket.on('user-typing-from-server', () => {
             setIsTyping(true)
@@ -52,27 +59,22 @@ export const DialogModal = ({ setDialogClose, users }) => {
             return !str.trim().length;
         }
         if (isEmpty(text)) return;
-        // const msg = new FormData();
-        // msg.append('recieverId', users.userId)
-        // msg.append('text', text.trim())
         socket.emit('send-message', {
             text: text.trim(),
             token: token,
             dialogId
         })
-        // const { data } = await axios.post('/dialog/send', Object.fromEntries(msg))
-        // setDialog(data.dialog.messages.reverse())
         setText('')
     }
 
     const handleTyping = (e) => {
         setText(e.target.value)
-        
-        socket.emit('user-start-typing')
+
+        socket.emit('user-start-typing', dialogId)
         if (typingTimeout) clearTimeout(typingTimeout)
 
         setTypingTimeout(setTimeout(() => {
-            socket.emit('user-stop-typing')
+            socket.emit('user-stop-typing', dialogId)
         }, 1500))
     }
 
@@ -94,20 +96,25 @@ export const DialogModal = ({ setDialogClose, users }) => {
                 </div>
                 {
                     loading
-                        ? <div>Loading...</div>
-                        : <div className={s.center}>
-                            <div className={s.scrollbar}>
-                                {
-                                    dialog && dialog.map(el => <Message key={el._id} el={el} user={users} isMe={users.userId !== el.sender} />)
-                                }
+                        ? <div className='h-[100%] flex-1'>Loading...</div>
+                        : <>
+                            <div className={s.center}>
+                                <div className={s.scrollbar}>
+                                    {
+                                        dialog && dialog
+                                            .map((el, idx) => 
+                                                <Message key={el._id} el={el} user={users} isMe={users.userId !== el.sender} />
+                                            )
+                                    }
+                                </div>
                             </div>
-                        </div>
-                }
 
-                <div className={s.bottom}>
-                    <textarea value={text} onChange={handleTyping} placeholder='Write a message' />
-                    <button onClick={sendMessage}><RiSendPlane2Line className={s.icon} /></button>
-                </div>
+                            <div className={s.bottom}>
+                                <textarea value={text} onChange={handleTyping} placeholder='Write a message' />
+                                <button onClick={sendMessage}><RiSendPlane2Line className={s.icon} /></button>
+                            </div>
+                        </>
+                }
 
             </div>
 

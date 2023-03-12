@@ -66,10 +66,41 @@ $brown: #786450;
 
             }
 
+            .status {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                transform: translate(-20%, -20%);
+
+                .online,
+                .offline {
+                    width: 15px;
+                    height: 15px;
+                    font-size: 5px;
+                    border-radius: 50%;
+
+
+                }
+
+                
+
+                .online {
+                    background-color: green;
+                }
+
+                .offline {
+                    background-color: rgb(238, 50, 50);
+                }
+            }
+
         }
 
         .infobox {
+            position: relative;
             min-height: 1.4rem;
+
+
+
             .name {
                 font-size: .9rem;
                 font-weight: 600;
